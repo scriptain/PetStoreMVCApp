@@ -3,15 +3,43 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome to the Pet Store</h1>
+    <h1 class="display-4">Welcome to the Pet Super Store</h1>
     <p>Below you can find a list of all available pets. If you would like to put a pet up for adoption with us, click the "Post" button above</p>
 </div>
 
 <div class="text-center">
-    <p>sadfasdfasdf</p>
+    @if (ViewData["pets"] != null)
+    {
+       
+        <div class="pet-data-container">
+            @foreach (var pet in ViewData["pets"] as IEnumerable<dynamic>)
+            {
+                <div class="individual-pet-container">
+                    @if (pet.name != null)
+                    {
+                        <p>@pet.name</p>
+                    }
+                    </div>
+            }
 
-     <p>@ViewData["ApiData"]</p>
-
-    <p>sadfasdfasdf</p>
+        </div>
+    } else
+    {
+        <div> Hello </div>
+    }
 
 </div>
+
+<style>
+    .pet-data-container {
+    }
+
+    .individual-pet-container {
+        border: 1px solid red;
+        padding: 2em;
+        margin: 2em;
+        display: inline-block
+    }
+
+
+</style>
