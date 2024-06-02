@@ -6,6 +6,9 @@ namespace PetStoreMVCApp
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // Register HTTP Client
+            builder.Services.AddHttpClient<IApiCallsService, ApiCallsService>();
+
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
