@@ -50,6 +50,8 @@ namespace PetStoreMVCApp.Controllers
             if (selectedValue == "bycategoryztoa")
             {
                 ViewData["pets"] = SortPetsByCatgeory(SortPetsByName("D", petData));
+                ViewData["pets"] = petData.OrderBy(p => p.category?.name ?? string.Empty).ThenByDescending(p => p.name).ToArray();
+
             }
             return View("Index"); // returning index view otherwise it will cause a 'the view handleselectchange was not found' error
         }
