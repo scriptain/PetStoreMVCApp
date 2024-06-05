@@ -40,10 +40,26 @@ namespace PetStoreMVCApp.Controllers
             Pet[]? petData = JsonConvert.DeserializeObject<Pet[]?>(data);
             ViewData["selectedValue"] = selectedValue;
             ViewData["pets"] = petData;
+            foreach(var pet in petData)
+            {
+ 
+            }
             if(selectedValue == "atoz")
             {
                 var petDataSortedByName = SortPetsByName(petData);
                 ViewData["pets"] = petDataSortedByName;
+            }
+            if (selectedValue == "bycategory")
+            {
+                Console.WriteLine("***************** SORTED BY CATEGORY *******************");
+                Console.WriteLine("***************** SORTED BY CATEGORY *******************");
+
+                Console.WriteLine("***************** SORTED BY CATEGORY *******************");
+
+                Console.WriteLine("***************** SORTED BY CATEGORY *******************");
+
+
+                ViewData["pets"] = SortPetsByCatgeory(petData);
             }
             return View("Index"); // returning index view otherwise it will cause a 'the view handleselectchange was not found' error
         }
@@ -60,6 +76,11 @@ namespace PetStoreMVCApp.Controllers
         public Pet[] SortPetsByName(Pet[] petData)
         {
             return petData.OrderBy(p => p.name).ToArray();
+        }
+
+        public Pet[] SortPetsByCatgeory(Pet[] petData)
+        {
+            return petData.OrderBy(p => p.category?.name ?? string.Empty).ToArray();
         }
 
         public IActionResult Privacy()
