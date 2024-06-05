@@ -40,9 +40,14 @@ namespace PetStoreMVCApp.Controllers
             Pet[]? petData = JsonConvert.DeserializeObject<Pet[]?>(data);
             ViewData["selectedValue"] = selectedValue;
             ViewData["pets"] = petData;
+            if(selectedValue == "atoz")
+            {
+                var petDataSortedByName = SortPetsByName(petData);
+                ViewData["pets"] = petDataSortedByName;
+            }
             return View("Index"); // returning index view otherwise it will cause a 'the view handleselectchange was not found' error
         }
-        // TODO: Use this function in the other actions
+        // TODO: Use this function in the other actions, currently causes a bug when i try
         public async Task<Pet[]> GetPetData()
         {
             string apiUrl = "https://petstore.swagger.io/v2/pet/findByStatus?status=available";
@@ -50,6 +55,11 @@ namespace PetStoreMVCApp.Controllers
             Pet[]? petData = JsonConvert.DeserializeObject<Pet[]?>(data);
             return petData;
 
+        }
+
+        public Pet[] SortPetsByName(Pet[] petData)
+        {
+            return petData.OrderBy(p => p.name).ToArray();
         }
 
         public IActionResult Privacy()

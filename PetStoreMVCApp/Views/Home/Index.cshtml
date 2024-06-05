@@ -2,9 +2,9 @@
     ViewData["Title"] = "Home Page";
     var selectedValue = ViewData["selectedValue"]?.ToString();
     ViewBag.Types = new List<SelectListItem> {
-        new SelectListItem { Value = "1", Text = "Option 1" },
-        new SelectListItem { Value = "2", Text = "Option 2" },
-        new SelectListItem { Value = "3", Text = "Option 3" }
+        new SelectListItem { Value = "latest", Text = "Date", Selected = selectedValue == "latest" },
+        new SelectListItem { Value = "atoz", Text = "A-Z", Selected = selectedValue == "atoz" },
+        new SelectListItem { Value = "bycategory", Text = "By Category", Selected = selectedValue == "bycategory" }
         };
 }
 
@@ -25,11 +25,6 @@
         @if (ViewData["id"] != null) 
         {
             <h1>ID: @ViewData["id"]</h1>
-        }
-        SELECTEDVALUE
-        @if (selectedValue != null) 
-        { 
-              <h2>@selectedValue</h2>  
         }
     </div>
 </div>
