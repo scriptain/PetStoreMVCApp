@@ -5,8 +5,8 @@ using Newtonsoft.Json;
 
 namespace PetStoreMVCApp.Controllers
 {
-// Suffix "Controller" is removed from controller name, A folder with the name "Home" is looked for in view
-// Then the method name i.e "Index" is used to map to a Index.cshtml file, thats how the framework connects controllers to views
+    // Suffix "Controller" is removed from controller name, A folder with the name "Home" is looked for in view
+    // Then the method name i.e "Index" is used to map to a Index.cshtml file, thats how the framework connects controllers to views
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -26,8 +26,6 @@ namespace PetStoreMVCApp.Controllers
             var data = await _apiCallsService.GetDataFromApiAsync(apiUrl);
             Pet[]? petData = JsonConvert.DeserializeObject<Pet[]?>(data);
             ViewData["pets"] = petData;
-            Console.WriteLine($"************PET DATA: ${petData}");
-
             return View();
         }
 
@@ -40,29 +38,22 @@ namespace PetStoreMVCApp.Controllers
             Pet[]? petData = JsonConvert.DeserializeObject<Pet[]?>(data);
             ViewData["selectedValue"] = selectedValue;
             ViewData["pets"] = petData;
-            foreach(var pet in petData)
+            if (selectedValue == "atoz")
             {
- 
-            }
-            if(selectedValue == "atoz")
-            {
-                var petDataSortedByName = SortPetsByName(petData);
+                var petDataSortedByName = SortPetsByName("A", petData);
                 ViewData["pets"] = petDataSortedByName;
             }
             if (selectedValue == "bycategory")
             {
-                Console.WriteLine("***************** SORTED BY CATEGORY *******************");
-                Console.WriteLine("***************** SORTED BY CATEGORY *******************");
-
-                Console.WriteLine("***************** SORTED BY CATEGORY *******************");
-
-                Console.WriteLine("***************** SORTED BY CATEGORY *******************");
-
-
                 ViewData["pets"] = SortPetsByCatgeory(petData);
+            }
+            if (selectedValue == "bycategoryztoa")
+            {
+                ViewData["pets"] = SortPetsByCatgeory(SortPetsByName("D", petData));
             }
             return View("Index"); // returning index view otherwise it will cause a 'the view handleselectchange was not found' error
         }
+
         // TODO: Use this function in the other actions, currently causes a bug when i try
         public async Task<Pet[]> GetPetData()
         {
@@ -73,9 +64,16 @@ namespace PetStoreMVCApp.Controllers
 
         }
 
-        public Pet[] SortPetsByName(Pet[] petData)
+        public Pet[] SortPetsByName(string? order, Pet[] petData)
         {
-            return petData.OrderBy(p => p.name).ToArray();
+            if(order == "D")
+            {
+                return petData.OrderByDescending(p => p.name).ToArray();
+            } else
+            {
+                return petData.OrderBy(p => p.name).ToArray();
+
+            }
         }
 
         public Pet[] SortPetsByCatgeory(Pet[] petData)

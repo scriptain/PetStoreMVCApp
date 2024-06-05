@@ -1,12 +1,14 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
     var selectedValue = ViewData["selectedValue"]?.ToString();
+
     ViewBag.Types = new List<SelectListItem> {
         new SelectListItem { Value = "latest", Text = "Date", Selected = selectedValue == "latest" },
         new SelectListItem { Value = "atoz", Text = "A-Z", Selected = selectedValue == "atoz" },
-        new SelectListItem { Value = "bycategory", Text = "By Category", Selected = selectedValue == "bycategory" }
-        };
-}
+        new SelectListItem { Value = "bycategory", Text = "By Category", Selected = selectedValue == "bycategory" },
+        new SelectListItem { Value = "bycategoryztoa", Text = "By Category (names: z-a)", Selected = selectedValue == "bycategoryztoa" }
+    };
+   }
 
 <div class="text-center">
     <h1 class="display-4">Welcome to the Pet Super Store</h1>
