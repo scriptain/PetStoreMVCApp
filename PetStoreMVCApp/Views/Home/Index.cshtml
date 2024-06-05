@@ -1,10 +1,37 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    var selectedValue = ViewData["selectedValue"]?.ToString();
+    ViewBag.Types = new List<SelectListItem> {
+        new SelectListItem { Value = "1", Text = "Option 1" },
+        new SelectListItem { Value = "2", Text = "Option 2" },
+        new SelectListItem { Value = "3", Text = "Option 3" }
+        };
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome to the Pet Super Store</h1>
-    <p>Below you can find a list of all available pets. If you would like to put a pet up for adoption with us, click the "Post" button above</p>
+    <h5>Below you can find a list of all available pets. If you would like to put a pet up for adoption with us, click the "Post" button above</h5>
+</div>
+
+<div class="input-container">
+    <div>
+        <label>sort by:</label>
+        <form asp-action="HandleSelectChange">
+            <select asp-items="ViewBag.Types" name="selectedValue" onchange="this.form.submit()"> <!-- name="selectedValue"  -->
+                
+            </select>
+        </form>
+
+        @if (ViewData["id"] != null) 
+        {
+            <h1>ID: @ViewData["id"]</h1>
+        }
+        SELECTEDVALUE
+        @if (selectedValue != null) 
+        { 
+              <h2>@selectedValue</h2>  
+        }
+    </div>
 </div>
 
 <div class="text-center">
@@ -15,9 +42,15 @@
             @foreach (var pet in ViewData["pets"] as IEnumerable<dynamic>)
             {
                 <div class="individual-pet-container">
-                    @if (pet.name != null)
+                    name @if (pet.name != null)
                     {
-                        <p>@pet.name</p>
+                           <p>@pet.name</p>
+                    }
+                    category @if (pet.category != null)
+                    {
+                        category: <p>@pet.category.name</p>
+                    } else {
+                        <p>no category</p>
                     }
                     </div>
             }
@@ -41,5 +74,12 @@
         display: inline-block
     }
 
-
+    .input-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 2em;
+        text-align: center;
+        font-size: 1.5em;
+    }
 </style>

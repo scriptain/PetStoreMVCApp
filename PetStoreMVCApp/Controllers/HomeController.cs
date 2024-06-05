@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using PetStoreMVCApp.Models;
 using System.Diagnostics;
 using Newtonsoft.Json;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PetStoreMVCApp.Controllers
 {
@@ -12,20 +11,45 @@ namespace PetStoreMVCApp.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IApiCallsService _apiCallsService;
-
+        public string selectedOption { get; set; }
+        // constructor
         public HomeController(ILogger<HomeController> logger, IApiCallsService apiCallService)
         {
             _logger = logger;
             _apiCallsService = apiCallService;
         }
-
+        // load and display the data
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             string apiUrl = "https://petstore.swagger.io/v2/pet/findByStatus?status=available";
             var data = await _apiCallsService.GetDataFromApiAsync(apiUrl);
             Pet[]? petData = JsonConvert.DeserializeObject<Pet[]?>(data);
             ViewData["pets"] = petData;
+            Console.WriteLine($"************PET DATA: ${petData}");
+
             return View();
+        }
+
+        // handle the select tag changing
+        public async Task<IActionResult> HandleSelectChange(string selectedValue)
+        {
+            // value selectedValue is passed from the view via the name attribute on the <select> element
+            string apiUrl = "https://petstore.swagger.io/v2/pet/findByStatus?status=available";
+            var data = await _apiCallsService.GetDataFromApiAsync(apiUrl);
+            Pet[]? petData = JsonConvert.DeserializeObject<Pet[]?>(data);
+            ViewData["selectedValue"] = selectedValue;
+            ViewData["pets"] = petData;
+            return View("Index"); // returning index view otherwise it will cause a 'the view handleselectchange was not found' error
+        }
+        // TODO: Use this function in the other actions
+        public async Task<Pet[]> GetPetData()
+        {
+            string apiUrl = "https://petstore.swagger.io/v2/pet/findByStatus?status=available";
+            var data = await _apiCallsService.GetDataFromApiAsync(apiUrl);
+            Pet[]? petData = JsonConvert.DeserializeObject<Pet[]?>(data);
+            return petData;
+
         }
 
         public IActionResult Privacy()
